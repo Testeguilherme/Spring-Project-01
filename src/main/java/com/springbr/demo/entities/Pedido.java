@@ -3,7 +3,6 @@ package com.springbr.demo.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -19,8 +18,8 @@ public class Pedido {
     @Column(name = "data_pedido")
     private LocalDate dataPedido;
 
-    @Column(name = "total", length = 20, precision = 2)
-    private BigDecimal total;
+    @Column(name = "total")
+    private Double total;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
@@ -32,7 +31,7 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(LocalDate dataPedido, BigDecimal total, Cliente cliente) {
+    public Pedido(LocalDate dataPedido, Double total, Cliente cliente) {
         this.dataPedido = dataPedido;
         this.total = total;
         this.cliente = cliente;
@@ -54,11 +53,11 @@ public class Pedido {
         this.dataPedido = dataPedido;
     }
 
-    public BigDecimal getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(BigDecimal total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -76,5 +75,14 @@ public class Pedido {
 
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
+    }
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", total=" + total +
+                ", cliente=" + cliente +
+                '}';
     }
 }

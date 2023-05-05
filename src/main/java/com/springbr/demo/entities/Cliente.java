@@ -13,13 +13,17 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome", length = 100)
+    @Column(name = "nome")
     private String nome;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Pedido> pedido;
 
     public Cliente() {
+    }
+
+    public Cliente(String nome) {
+        this.nome = nome;
     }
 
     public Integer getId() {

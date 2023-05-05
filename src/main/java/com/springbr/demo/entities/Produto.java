@@ -2,7 +2,6 @@ package com.springbr.demo.entities;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "produto")
@@ -17,12 +16,12 @@ public class Produto {
     private String descricao;
 
     @Column(name = "preco_unitario")
-    private BigDecimal precoUnitario;
+    private Double precoUnitario;
 
     public Produto() {
     }
 
-    public Produto(String descricao, BigDecimal precoUnitario) {
+    public Produto(String descricao, Double precoUnitario) {
         this.descricao = descricao;
         this.precoUnitario = precoUnitario;
     }
@@ -43,11 +42,11 @@ public class Produto {
         this.descricao = descricao;
     }
 
-    public BigDecimal getPrecoUnitario() {
+    public Double getPrecoUnitario() {
         return precoUnitario;
     }
 
-    public void setPrecoUnitario(BigDecimal precoUnitario) {
+    public void setPrecoUnitario(Double precoUnitario) {
         this.precoUnitario = precoUnitario;
     }
 
