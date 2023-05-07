@@ -70,4 +70,18 @@ public class ClienteController {
                 return ResponseEntity.notFound().build();
         }
 
+        //ANOTHER WAY TO UPDATE
+        @PutMapping("/update2/{id}")
+        public ResponseEntity update2(@PathVariable Integer id, @RequestBody Cliente newClient){
+                return clienteRepository
+                        .findById(id)
+                        .map(cliente -> {
+                                newClient.setId(cliente.getId());
+                                clienteRepository.save(newClient);
+                                return ResponseEntity.noContent().build();
+                        }).orElseGet( () -> ResponseEntity.notFound().build());
+        }
+
 }
+
+
