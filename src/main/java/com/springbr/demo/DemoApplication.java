@@ -17,13 +17,13 @@ import java.util.List;
 @SpringBootApplication
 public class DemoApplication {
 
-	@Bean
-	public CommandLineRunner commandLineRunner(@Autowired ClienteRepository clienteRepository){
-		return args -> {
-			Cliente c1 = new Cliente("Guilherme");
-			clienteRepository.save(c1);
-		};
-	}
+//	@Bean
+//	public CommandLineRunner commandLineRunner(@Autowired ClienteRepository clienteRepository){
+//		return args -> {
+//			Cliente c1 = new Cliente("Guilherme");
+//			clienteRepository.save(c1);
+//		};
+//	}
 
 
 	public static void main(String[] args) {
