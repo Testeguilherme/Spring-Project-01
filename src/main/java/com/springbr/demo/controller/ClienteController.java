@@ -4,8 +4,10 @@ import com.springbr.demo.entities.Cliente;
 import com.springbr.demo.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +25,7 @@ public class ClienteController {
         }
 
         //FIND ALL
-        @GetMapping("/all")
+        @GetMapping("/")
         public List<Cliente> findAll(){
                 List<Cliente> allClients = clienteRepository.findAll();
                 return allClients;
@@ -31,56 +33,53 @@ public class ClienteController {
 
         //FIND BY ID
         @GetMapping("/{id}")
-        public ResponseEntity getClientById(@PathVariable int id){
-                Optional<Cliente> client =  clienteRepository.findById(id);
-                if(client.isPresent()){
-                        return ResponseEntity.ok(client.get());
-                }
-                return ResponseEntity.notFound().build();
+        public Cliente getClientById(@PathVariable int id){
+                return clienteRepository
+                        .findById(id)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
         }
 
-        //ADD VALUES TO YOUR DATABASE
-        @PostMapping("/register")
-        public ResponseEntity saveClient(@RequestBody Cliente cliente){
-                Cliente clientSaved = clienteRepository.save(cliente);
-                return ResponseEntity.ok(clientSaved);
+        //SAVE CLIENTS
+        @PostMapping("/")
+        @ResponseStatus(HttpStatus.CREATED)
+        public Cliente save(@RequestBody Cliente cliente){
+                return clienteRepository.save(cliente);
         }
 
         //DELETE
-        @GetMapping("/delete/{id}")
-        public ResponseEntity deleteCliente(@PathVariable Integer id){
-                Optional<Cliente> cliente = clienteRepository.findById(id);
-                if(cliente.isPresent()){
-                        clienteRepository.deleteById(id);
-                        return ResponseEntity.noContent().build();
-                } else{
-                        return ResponseEntity.notFound().build();
-                }
+        @DeleteMapping("/{id}")
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void deleteCliente(@PathVariable Integer id){
+                clienteRepository.findById(id)
+                        .map(cliente -> {
+                                clienteRepository.delete(cliente);
+                                return cliente;
+                        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
         }
 
         //UPDATE
-        @PutMapping("/update/{id}")
-        public ResponseEntity updateClient(@PathVariable Integer id, @RequestBody Cliente newClient){
-                Optional<Cliente> client = clienteRepository.findById(id);
-                if(client.isPresent()){
-                        client.get().setNome(newClient.getNome());
-                        Cliente updCliente = clienteRepository.save(client.get());
-                        return ResponseEntity.noContent().build();
-                }
-                return ResponseEntity.notFound().build();
-        }
+//        @PutMapping("/{id}")
+//        public ResponseEntity updateClient(@PathVariable Integer id, @RequestBody Cliente newClient){
+//                Optional<Cliente> client = clienteRepository.findById(id);
+//                if(client.isPresent()){
+//                        client.get().setNome(newClient.getNome());
+//                        Cliente updCliente = clienteRepository.save(client.get());
+//                        return ResponseEntity.noContent().build();
+//                }
+//                return ResponseEntity.notFound().build();
+//        }
 
-        //ANOTHER WAY TO UPDATE
-        @PutMapping("/update2/{id}")
-        public ResponseEntity update2(@PathVariable Integer id, @RequestBody Cliente newClient){
-                return clienteRepository
-                        .findById(id)
-                        .map(cliente -> {
-                                newClient.setId(cliente.getId());
+        //UPDATE
+        @PutMapping("/{id}")
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void update2(@PathVariable Integer id, @RequestBody Cliente newClient){
+                clienteRepository.findById(id)
+                        .map(cliente -> {newClient.setId(cliente.getId());
                                 clienteRepository.save(newClient);
                                 return ResponseEntity.noContent().build();
-                        }).orElseGet( () -> ResponseEntity.notFound().build());
+                        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
         }
+
 
 }
 
