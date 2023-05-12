@@ -1,4 +1,4 @@
-package com.springbr.demo.repository;
+package com.springbr.demo.repositories;
 
 import com.springbr.demo.entities.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
