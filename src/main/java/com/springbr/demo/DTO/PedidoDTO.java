@@ -1,23 +1,18 @@
 package com.springbr.demo.DTO;
 
-/*
-{
-    "cliente": 1,
-    "total": 100,
-    "itens": [
-        {
-            "produto": 1,
-            "quantidade": 10
-        }
-    ]
-}
- */
 
 import com.springbr.demo.entities.Cliente;
 import com.springbr.demo.entities.Pedido;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class PedidoDTO {
 
     private Integer clienteId;
